@@ -33,8 +33,8 @@ public class BlueprintAPIController {
         @RequestMapping(method = RequestMethod.GET)
         public ResponseEntity<?> manejadorGetRecursoBlueprint(){
             try {
-                Set<Blueprint> bp = bps.getBlueprintsByAuthor("Pedro");
-
+                    Set<Blueprint> bp = bps.getBlueprintsByAuthor("Pedro");
+                    System.out.println(bp);
                 return new ResponseEntity<>(new Gson().toJson(bp),HttpStatus.ACCEPTED);
             } catch (BlueprintNotFoundException ex) {
                 Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
