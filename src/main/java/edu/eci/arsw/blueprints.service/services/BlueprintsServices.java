@@ -75,8 +75,33 @@ public class BlueprintsServices {
                 bp = bpf.filterPoints(bp);
                 blueprintsFiltered.add(bp);
             }
-        }catch (Exception e){
-            throw new UnsupportedOperationException("Error with the operation on services.");
+        }catch (BlueprintNotFoundException e){
+            throw e;
+        }
+        return blueprintsFiltered;
+    }
+
+    /**
+     *
+     * @param author blueprint's author
+     * @return all the blueprints of the given author
+     * @throws BlueprintNotFoundException if the given author doesn't exist
+     */
+    public Set<Blueprint> getBlueprintsByAuthorBpName(String author, String bpname) throws BlueprintNotFoundException{
+        Set<Blueprint> blueprints;
+        Set<Blueprint> blueprintsFiltered = new HashSet<>();
+        try {
+            System.out.println(bpname);
+            blueprints = bpp.getBlueprintsByAuthor(author);
+            for(Blueprint bp: blueprints){
+                System.out.println(bp.getName());
+                if (bp.getName().equals(bpname)) {
+                    bp = bpf.filterPoints(bp);
+                    blueprintsFiltered.add(bp);
+                }
+            }
+        }catch (BlueprintNotFoundException e){
+            throw e;
         }
         return blueprintsFiltered;
     }

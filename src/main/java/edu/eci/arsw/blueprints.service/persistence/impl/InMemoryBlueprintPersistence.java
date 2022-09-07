@@ -29,11 +29,11 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence {
         Point[] pts1=new Point[]{new Point(0, 0),new Point(10, 10), new Point(10, 10),
                 new Point(11, 10), new Point(15, 10), new Point(15, 10), new Point(0,0)};
         Blueprint bp=new Blueprint("_authorname_", "_bpname_ ",pts);
-        Blueprint bp1=new Blueprint("Pedro","casa#38", pts1);
-        Blueprint bp2=new Blueprint("Juan","casa#39", pts1);
-        Blueprint bp3=new Blueprint("Pedro","casa#40", pts1);
-        Blueprint bp4=new Blueprint("Pedro","casa#41", pts1);
-        Blueprint bp5=new Blueprint("Juan","casa#42", pts1);
+        Blueprint bp1=new Blueprint("pedro","casa#38", pts1);
+        Blueprint bp2=new Blueprint("juan","casa#39", pts1);
+        Blueprint bp3=new Blueprint("pedro","casa#40", pts1);
+        Blueprint bp4=new Blueprint("pedro","casa#41", pts1);
+        Blueprint bp5=new Blueprint("juan","casa#42", pts1);
         blueprints.put(new Tuple<>(bp.getAuthor(),bp.getName()), bp);
         blueprints.put(new Tuple<>(bp1.getAuthor(),bp1.getName()), bp1);
         blueprints.put(new Tuple<>(bp2.getAuthor(),bp2.getName()), bp2);
@@ -65,6 +65,7 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence {
                 authorBlueprints.add(getBlueprint(author, key.o2));
             }
         }
+        if (authorBlueprints.size() == 0) throw new BlueprintNotFoundException("Autor no encontrado");
         return authorBlueprints;
     }
 
