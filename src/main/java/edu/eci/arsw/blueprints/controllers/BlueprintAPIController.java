@@ -16,6 +16,7 @@ import edu.eci.arsw.blueprints.service.persistence.BlueprintNotFoundException;
 import edu.eci.arsw.blueprints.service.services.BlueprintsServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,12 +31,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class BlueprintAPIController {
         @Autowired
         BlueprintsServices bps = null;
-        @RequestMapping(method = RequestMethod.GET)
+        @RequestMapping(method = RequestMethod.GET, produces= MediaType. )
         public ResponseEntity<?> manejadorGetRecursoBlueprint(){
             try {
                     Set<Blueprint> bp = bps.getBlueprintsByAuthor("Pedro");
-                    System.out.println(bp);
-                return new ResponseEntity<>(new Gson().toJson(bp),HttpStatus.ACCEPTED);
+                return new ResponseEntity<>(new Gson().toJson(bp),HttpStatus.OK);
             } catch (BlueprintNotFoundException ex) {
                 Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
                 return new ResponseEntity<>("Error bla bla bla", HttpStatus.NOT_FOUND);
