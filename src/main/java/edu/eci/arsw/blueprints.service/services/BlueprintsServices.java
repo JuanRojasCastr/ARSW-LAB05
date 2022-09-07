@@ -39,7 +39,18 @@ public class BlueprintsServices {
     }
     
     public Set<Blueprint> getAllBlueprints(){
-        return null;
+        Set<Blueprint> blueprints;
+        Set<Blueprint> blueprintsFiltered = new HashSet<>();
+        try {
+            blueprints = bpp.getAllBlueprints();
+            for(Blueprint bp: blueprints){
+                bp = bpf.filterPoints(bp);
+                blueprintsFiltered.add(bp);
+            }
+        }catch (Exception e){
+            throw new UnsupportedOperationException("Error with the operation on services.");
+        }
+        return blueprintsFiltered;
     }
     
     /**
