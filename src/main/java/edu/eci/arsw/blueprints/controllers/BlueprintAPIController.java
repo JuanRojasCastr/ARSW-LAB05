@@ -27,19 +27,14 @@ import org.springframework.web.bind.annotation.RestController;
  * @author hcadavid
  */
 @RestController
-@RequestMapping(value = "/blueprint")
+@RequestMapping(value = "/blueprints")
 public class BlueprintAPIController {
         @Autowired
         BlueprintsServices bps = null;
-        @RequestMapping(method = RequestMethod.GET, produces= MediaType. )
+        @RequestMapping(method = RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE )
         public ResponseEntity<?> manejadorGetRecursoBlueprint(){
-            try {
-                    Set<Blueprint> bp = bps.getBlueprintsByAuthor("Pedro");
-                return new ResponseEntity<>(new Gson().toJson(bp),HttpStatus.OK);
-            } catch (BlueprintNotFoundException ex) {
-                Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
-                return new ResponseEntity<>("Error bla bla bla", HttpStatus.NOT_FOUND);
-            }
+            Set<Blueprint> bp = bps.getAllBlueprints();
+            return new ResponseEntity<>(new Gson().toJson(bp),HttpStatus.OK);
         }
 }
 
