@@ -41,6 +41,5 @@ public class BlueprintAPIController {
                 return new ResponseEntity<>("Error bla bla bla", HttpStatus.NOT_FOUND);
             }
         }
-    
 }
 
