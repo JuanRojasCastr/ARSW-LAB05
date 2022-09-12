@@ -38,7 +38,7 @@ public class BlueprintsServices {
         }
     }
     
-    public Set<Blueprint> getAllBlueprints(){
+    public Set<Blueprint> getAllBlueprints() throws BlueprintNotFoundException {
         Set<Blueprint> blueprints;
         Set<Blueprint> blueprintsFiltered = new HashSet<>();
         try {
@@ -47,8 +47,8 @@ public class BlueprintsServices {
                 bp = bpf.filterPoints(bp);
                 blueprintsFiltered.add(bp);
             }
-        }catch (Exception e){
-            throw new UnsupportedOperationException("Error with the operation on services.");
+        }catch (BlueprintNotFoundException e){
+            throw e;
         }
         return blueprintsFiltered;
     }
