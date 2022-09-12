@@ -69,5 +69,14 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence {
         return authorBlueprints;
     }
 
+    @Override
+    public Set<Blueprint> getAllBlueprints() throws BlueprintNotFoundException {
+        Set<Blueprint> authorBlueprints = new HashSet<>();
+        for (Tuple<String,String> key: blueprints.keySet()){
+            authorBlueprints.add(getBlueprint(key.o1, key.o2));
+        }
+        return authorBlueprints;
+    }
+
 
 }

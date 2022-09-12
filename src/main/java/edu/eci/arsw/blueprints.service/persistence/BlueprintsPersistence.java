@@ -34,11 +34,13 @@ public interface BlueprintsPersistence {
     public Blueprint getBlueprint(String author,String bprintname) throws BlueprintNotFoundException;
 
     /**
-     * Metgod that search all the blueprints for one author
+     * Method that search all the blueprints for one author
      * @param author the name of the author owner of blueprints
      * @return ArrayList of BluePrints
      * @throws BlueprintNotFoundException if there is no such blueprint
      */
     public Set<Blueprint> getBlueprintsByAuthor(String author) throws  BlueprintNotFoundException;
-    
+
+    public Set<Blueprint> getAllBlueprints() throws  BlueprintNotFoundException;
+
 }
