@@ -10,9 +10,13 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import edu.eci.arsw.blueprints.service.model.Blueprint;
 import edu.eci.arsw.blueprints.service.persistence.BlueprintNotFoundException;
+import edu.eci.arsw.blueprints.service.persistence.BlueprintPersistenceException;
 import edu.eci.arsw.blueprints.service.services.BlueprintsServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,6 +63,30 @@ public class BlueprintAPIController {
         } catch (BlueprintNotFoundException ex) {
             Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<?> postBlueprint(@RequestBody String bp){
+        try {
+            Blueprint blueprint = new Gson().fromJson(bp, Blueprint.class);
+            bps.postBlueprint(blueprint);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (BlueprintPersistenceException ex) {
+            Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>("Error this blueprint already exists, try with a PUT",HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, path = "/{author}/{bpname}")
+    public ResponseEntity<?> putBlueprint(@PathVariable String author, @PathVariable String bpname, @RequestBody String bp){
+        try {
+            Blueprint blueprint = new Gson().fromJson(bp, Blueprint.class);
+            bps.putBlueprint(author, bpname, blueprint);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (BlueprintPersistenceException ex) {
+            Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>("Error this blueprint doesn't exists",HttpStatus.FORBIDDEN);
         }
     }
 }

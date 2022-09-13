@@ -17,7 +17,7 @@ import java.util.Set;
 public interface BlueprintsPersistence {
     
     /**
-     * 
+     * Method save a new blueprint
      * @param bp the new blueprint
      * @throws BlueprintPersistenceException if a blueprint with the same name already exists,
      *    or any other low-level persistence error occurs.
@@ -25,9 +25,9 @@ public interface BlueprintsPersistence {
     public void saveBlueprint(Blueprint bp) throws BlueprintPersistenceException;
     
     /**
-     * 
+     * Method that search a blueprint for one author and name
      * @param author blueprint's author
-     * @param bprintname blueprint's author
+     * @param bprintname blueprint's name
      * @return the blueprint of the given name and author
      * @throws BlueprintNotFoundException if there is no such blueprint
      */
@@ -36,11 +36,31 @@ public interface BlueprintsPersistence {
     /**
      * Method that search all the blueprints for one author
      * @param author the name of the author owner of blueprints
-     * @return ArrayList of BluePrints
+     * @return Set of BluePrints
      * @throws BlueprintNotFoundException if there is no such blueprint
      */
     public Set<Blueprint> getBlueprintsByAuthor(String author) throws  BlueprintNotFoundException;
 
+    /**
+     * Method that search all the blueprints
+     * @return Set of BluePrints
+     * @throws BlueprintPersistenceException if the blueprint already exists
+     */
     public Set<Blueprint> getAllBlueprints() throws  BlueprintNotFoundException;
 
+    /**
+     * Method that save a given blueprint
+     * @param bp blueprint
+     * @throws BlueprintPersistenceException if the blueprint already exists
+     */
+    public void postBlueprint(Blueprint bp) throws BlueprintPersistenceException;
+
+    /**
+     * Method that modify a given blueprint
+     * @param author blueprint's author
+     * @param bpname blueprint's name
+     * @param bp blueprint
+     * @throws BlueprintPersistenceException if the blueprint doesn't exists
+     */
+    public void putBlueprint(String author, String bpname ,Blueprint bp) throws BlueprintPersistenceException;
 }

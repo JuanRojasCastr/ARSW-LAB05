@@ -14,6 +14,7 @@ import java.util.Set;
 import edu.eci.arsw.blueprints.service.filters.Filter;
 import edu.eci.arsw.blueprints.service.model.Blueprint;
 import edu.eci.arsw.blueprints.service.persistence.BlueprintNotFoundException;
+import edu.eci.arsw.blueprints.service.persistence.BlueprintPersistenceException;
 import edu.eci.arsw.blueprints.service.persistence.BlueprintsPersistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,12 @@ public class BlueprintsServices {
             throw new UnsupportedOperationException("Error with the operation on services.");
         }
     }
-    
+
+    /**
+     * Method that search all the blueprints
+     * @return Set of BluePrints
+     * @throws BlueprintNotFoundException if the blueprint already exists
+     */
     public Set<Blueprint> getAllBlueprints() throws BlueprintNotFoundException {
         Set<Blueprint> blueprints;
         Set<Blueprint> blueprintsFiltered = new HashSet<>();
@@ -70,12 +76,12 @@ public class BlueprintsServices {
         }
         return blueprint;
     }
-    
+
     /**
-     * 
-     * @param author blueprint's author
-     * @return all the blueprints of the given author
-     * @throws BlueprintNotFoundException if the given author doesn't exist
+     * Method that search all the blueprints for one author
+     * @param author the name of the author owner of blueprints
+     * @return Set of BluePrints
+     * @throws BlueprintNotFoundException if there is no such blueprint
      */
     public Set<Blueprint> getBlueprintsByAuthor(String author) throws BlueprintNotFoundException{
         Set<Blueprint> blueprints;
@@ -93,10 +99,11 @@ public class BlueprintsServices {
     }
 
     /**
-     *
+     * Method that search a blueprint for one author and name
      * @param author blueprint's author
-     * @return all the blueprints of the given author
-     * @throws BlueprintNotFoundException if the given author doesn't exist
+     * @param bpname blueprint's name
+     * @return the blueprint of the given name and author
+     * @throws BlueprintNotFoundException if there is no such blueprint
      */
     public Set<Blueprint> getBlueprintsByAuthorBpName(String author, String bpname) throws BlueprintNotFoundException{
         Set<Blueprint> blueprints;
@@ -116,5 +123,24 @@ public class BlueprintsServices {
         }
         return blueprintsFiltered;
     }
-    
+
+    /**
+     * Method that save a given blueprint
+     * @param bp blueprint
+     * @throws BlueprintPersistenceException if the blueprint already exists
+     */
+    public void postBlueprint(Blueprint bp) throws BlueprintPersistenceException {
+        bpp.postBlueprint(bp);
+    }
+
+    /**
+     * Method that modify a given blueprint
+     * @param author blueprint's author
+     * @param bpname blueprint's name
+     * @param bp blueprint
+     * @throws BlueprintPersistenceException if the blueprint doesn't exists
+     */
+    public void putBlueprint(String author, String bpname ,Blueprint bp) throws BlueprintPersistenceException {
+        bpp.putBlueprint(author, bpname, bp);
+    }
 }

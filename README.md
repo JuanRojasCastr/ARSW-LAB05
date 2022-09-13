@@ -91,21 +91,39 @@ Del anterior diagrama de componentes (de alto nivel), se desprendió el siguient
     caso jSON), y el ‘cuerpo del mensaje’ que irá con la petición, lo
     cual en este caso debe ser un documento jSON equivalente a la clase
     Cliente (donde en lugar de {ObjetoJSON}, se usará un objeto jSON correspondiente a una nueva orden:
-
-	```	
+	
+	
 	$ curl -i -X POST -HContent-Type:application/json -HAccept:application/json http://URL_del_recurso_ordenes -d '{ObjetoJSON}'
-	```	
 
-	Con lo anterior, registre un nuevo plano (para 'diseñar' un objeto jSON, puede usar [esta herramienta](http://www.jsoneditoronline.org/)):
+![](https://media.discordapp.net/attachments/584593411567517710/1019268199335870464/unknown.png?width=1440&height=83)
+
+Ejemplo de petición realizada:
+
+	$ curl -i -X POST -HContent-Type:application/json -HAccept:application/json http://localhost:8080/blueprints -d {\"author\":\"pepe\",\"points\":[{\"x\":0,\"y\":0},{\"x\":11,\"y\":10},{\"x\":0,\"y\":0}],\"name\":\"test\"}
+
+   Con lo anterior, registre un nuevo plano (para 'diseñar' un objeto jSON, puede usar [esta herramienta](http://www.jsoneditoronline.org/)):
 	
 
-	Nota: puede basarse en el formato jSON mostrado en el navegador al consultar una orden con el método GET.
+   Nota: puede basarse en el formato jSON mostrado en el navegador al consultar una orden con el método GET.
 
 
 3. Teniendo en cuenta el autor y numbre del plano registrado, verifique que el mismo se pueda obtener mediante una petición GET al recurso '/blueprints/{author}/{bpname}' correspondiente.
 
+Si consultamos despúes del comando por blueprints/pepe/test:
+
+![](https://media.discordapp.net/attachments/584593411567517710/1019269795008495687/unknown.png?width=523&height=682)
+
+
 4. Agregue soporte al verbo PUT para los recursos de la forma '/blueprints/{author}/{bpname}', de manera que sea posible actualizar un plano determinado.
 
+Creamos un nuevo recurso con ultima cordenada en (0,0), luego editamos el recurso con la url especificando cual es y pasandole el bp con utlimas cordenadas en (30,30), luego probamos cambiando algo a la url para probar que los casos en los que no exista devuelva el error:
+
+![](https://media.discordapp.net/attachments/584593411567517710/1019279952639709295/unknown.png?width=1440&height=434)
+
+Para comprobar que funciona las capturas de la página que en la parte superior contienen la fecha y hora:
+
+![](https://media.discordapp.net/attachments/584593411567517710/1019279490096046250/unknown.png)
+![](https://media.discordapp.net/attachments/584593411567517710/1019279713782468639/unknown.png)
 
 ### Parte III
 
