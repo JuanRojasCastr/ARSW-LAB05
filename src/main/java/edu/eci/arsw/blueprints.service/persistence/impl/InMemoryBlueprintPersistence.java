@@ -13,6 +13,7 @@ import edu.eci.arsw.blueprints.service.persistence.BlueprintsPersistence;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *
@@ -21,7 +22,7 @@ import java.util.*;
 @Service
 public class InMemoryBlueprintPersistence implements BlueprintsPersistence {
 
-    private final Map<Tuple<String,String>, Blueprint> blueprints=new HashMap<>();
+    private final ConcurrentHashMap<Tuple<String,String>, Blueprint> blueprints=new ConcurrentHashMap<>();
 
     public InMemoryBlueprintPersistence() {
         //load stub data
@@ -81,13 +82,28 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence {
     @Override
     public void postBlueprint(Blueprint bp) throws BlueprintPersistenceException {
         if (blueprints.containsKey(new Tuple<>(bp.getAuthor(),bp.getName()))) throw new BlueprintPersistenceException("This object already exists");
-        else blueprints.put(new Tuple<>(bp.getAuthor(),bp.getName()), bp);
+        else {
+            blueprints.put(new Tuple<>(bp.getAuthor(),bp.getName()), bp);
+            try {
+                Thread.sleep(8000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     @Override
     public void putBlueprint(String author, String bpname ,Blueprint bp) throws  BlueprintPersistenceException {
         if (!blueprints.containsKey(new Tuple<>(author,bpname))) throw new BlueprintPersistenceException("This object doesn't exists");
-        else blueprints.replace(new Tuple<>(bp.getAuthor(),bp.getName()), bp);
+        else
+        {
+            blueprints.replace(new Tuple<>(bp.getAuthor(),bp.getName()), bp);
+            try {
+                Thread.sleep(8000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
 }

@@ -60,10 +60,12 @@ Del anterior diagrama de componentes (de alto nivel), se desprendió el siguient
 	Y luego enviando una petición GET a: http://localhost:8080/blueprints. Rectifique que, como respuesta, se obtenga un objeto jSON con una lista que contenga el detalle de los planos suministados por defecto, y que se haya aplicado el filtrado de puntos correspondiente.
 
 
+![](.README_images/cd4e1435.png)
 5. Modifique el controlador para que ahora, acepte peticiones GET al recurso /blueprints/{author}, el cual retorne usando una representación jSON todos los planos realizados por el autor cuyo nombre sea {author}. Si no existe dicho autor, se debe responder con el código de error HTTP 404. Para esto, revise en [la documentación de Spring](http://docs.spring.io/spring/docs/current/spring-framework-reference/html/mvc.html), sección 22.3.2, el uso de @PathVariable. De nuevo, verifique que al hacer una petición GET -por ejemplo- a recurso http://localhost:8080/blueprints/juan, se obtenga en formato jSON el conjunto de planos asociados al autor 'juan' (ajuste esto a los nombres de autor usados en el punto 2).
-
+![](.README_images/c848d11b.png)
+![](.README_images/9fe17147.png)
 6. Modifique el controlador para que ahora, acepte peticiones GET al recurso /blueprints/{author}/{bpname}, el cual retorne usando una representación jSON sólo UN plano, en este caso el realizado por {author} y cuyo nombre sea {bpname}. De nuevo, si no existe dicho autor, se debe responder con el código de error HTTP 404. 
-
+![](.README_images/d48a5048.png)
 
 
 ### Parte II
@@ -129,12 +131,34 @@ Para comprobar que funciona las capturas de la página que en la parte superior 
 
 El componente BlueprintsRESTAPI funcionará en un entorno concurrente. Es decir, atederá múltiples peticiones simultáneamente (con el stack de aplicaciones usado, dichas peticiones se atenderán por defecto a través múltiples de hilos). Dado lo anterior, debe hacer una revisión de su API (una vez funcione), e identificar:
 
-* Qué condiciones de carrera se podrían presentar?
-* Cuales son las respectivas regiones críticas?
+* ¿Qué condiciones de carrera se podrían presentar?
+
+Cuando se haga un post o un put y se haga un get la información que se reciba va a depender del origen.
+Dos puts al tiempo pondrían generar conflicto entre la información deseada.
+
+* ¿Cuáles son las respectivas regiones críticas?
+
+Sol1: El HashMap blueprints, ya que es nuestro acceso a persistencia, cualquier operación de agregar o leer debe ser declarada
+como sección crítica.
+
+Sol2: Se puede hacer lecturas sobre los datos, realmente no importa, depende de la aplicación que esté sirviendo la API,
+pues se puede hacer lo que se denomina una lectura sucia, sin embargo los métodos put y post de la implementación de
+BlueprintsPersistence deben ser síncronos para que no existan problemas ni inconsistencias en los datos guardados.
+
 
 Ajuste el código para suprimir las condiciones de carrera. Tengan en cuenta que simplemente sincronizar el acceso a las operaciones de persistencia/consulta DEGRADARÁ SIGNIFICATIVAMENTE el desempeño de API, por lo cual se deben buscar estrategias alternativas.
 
+usamos el hasmap concurrent de java
+![](.README_images/ca7a5a34.png)
+para ver la concurrecnia vamos a alargar el tiempo
+![](.README_images/61c821f9.png)
+Y al lanzar el segundo carga unos milisegundos y tenemos
+![](.README_images/33b39823.png)
+probando con dos peticiones
+![](.README_images/9d2e5dd6.png)
+
 Escriba su análisis y la solución aplicada en el archivo ANALISIS_CONCURRENCIA.txt
+
 
 #### Criterios de evaluación
 
